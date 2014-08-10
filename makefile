@@ -84,16 +84,13 @@ LIBRARY_PATH=\
 # terminal emulator to execute new windows in
 TERMINAL=xterm
 
-# directory containing build tools
-APP_DIR=../../../../../../applications/gcc-4.8.1_i586-elf/bin
-
 # compiler settings
 export PATH:=$(PATH)
 TARGET=i586-elf
 OPTIMIZE=-O2
-AS=$(APP_DIR)/$(TARGET)-as
+AS=$(TARGET)-as
 ASFLAGS=
-CC=$(APP_DIR)/$(TARGET)-gcc
+CC=$(TARGET)-gcc
 CCFLAGS=\
 	$(INCLUDE_SCRIPT) \
 	$(OPTIMIZE) \
@@ -101,7 +98,7 @@ CCFLAGS=\
 	-ffreestanding \
 	-Wall \
 	-Wextra
-CPP=$(APP_DIR)/$(TARGET)-g++
+CPP=$(TARGET)-g++
 CPPFLAGS=\
 	$(INCLUDE_SCRIPT) \
 	$(OPTIMIZE) \
