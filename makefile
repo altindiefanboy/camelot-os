@@ -158,10 +158,8 @@ QEMU_CPU=1
 #QEMU flags
 QEMU_FLAGS=\
 	-boot d \
-	-no-kqemu \
 	-m $(QEMU_MEMORY) \
 	-smp $(QEMU_CPU) \
-	-std-vga \
 	-soundhw pcspk,sb16
 
 # build objects, binary, and disk image
@@ -204,7 +202,9 @@ $(ISO_DIR)/$(ISO): $(OBJ) $(BIN_DIR)/$(BIN)
 	mkdir -p $(GRUB_DIR)/iso/boot/grub
 	cp grub.cfg $(GRUB_DIR)/iso/boot/grub/grub.cfg
 	mkdir -p $(ISO_DIR)
-	grub-mkrescue --output=$(ISO_DIR)/$(ISO) $(GRUB_DIR)/iso
+	grub-mkrescue \
+		--output=$(ISO_DIR)/$(ISO) $(GRUB_DIR)/iso
+		--directory=/usr/lib/grub/i386-pc
 
 # target to create bootable disk image using GRUB bootloader
 iso: $(OBJ) $(BIN_DIR)/$(BIN) $(ISO_DIR)/$(ISO)
@@ -232,8 +232,10 @@ $(DEBUG_DIR)/$(ISO_DIR)/$(ISO): $(OBJ) $(BIN_DIR)/$(BIN) \
 	mkdir -p $(DEBUG_DIR)/$(GRUB_DIR)/iso/boot/grub
 	cp grub.cfg $(DEBUG_DIR)/$(GRUB_DIR)/iso/boot/grub/grub.cfg
 	mkdir -p $(DEBUG_DIR)/$(ISO_DIR)
-	grub-mkrescue --output=$(DEBUG_DIR)/$(ISO_DIR)/$(ISO) \
-		$(DEBUG_DIR)/$(GRUB_DIR)/iso
+	grub-mkrescue \
+		--output=$(DEBUG_DIR)/$(ISO_DIR)/$(ISO) \
+			$(DEBUG_DIR)/$(GRUB_DIR)/iso \
+		--directory=/usr/lib/grub/i386-pc
 
 # run bootable disk image using QEMU
 .PHONY: qemu
@@ -245,7 +247,7 @@ qemu: $(TEST_DEPENDENCIES)
 		$(QEMU_DISK_SIZE)
 ifeq ($(QEMU_DEBUG), true)
 	$(TERMINAL) -e \
-		qemu \
+		qemu-system-i386 \
 			-monitor stdio \
 			-s \
 			-S \
@@ -260,7 +262,7 @@ ifeq ($(QEMU_DEBUG), true)
 		-ex "target remote localhost:1234" \
 		-ex "symbol-file $(DEBUG_DIR)/$(SYM)"
 else
-	qemu \
+	qemu-system-i386 \
 		-monitor stdio \
 		-S \
 		-hda $(QEMU_DIR)/$(QEMU_DISK) \
