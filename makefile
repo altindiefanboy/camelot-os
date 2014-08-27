@@ -262,12 +262,13 @@ ifeq ($(QEMU_DEBUG), true)
 		-ex "target remote localhost:1234" \
 		-ex "symbol-file $(DEBUG_DIR)/$(SYM)"
 else
-	qemu-system-i386 \
-		-monitor stdio \
-		-S \
-		-hda $(QEMU_DIR)/$(QEMU_DISK) \
-		-cdrom $(ISO_DIR)/$(ISO) \
-		$(QEMU_FLAGS)
+	$(TERMINAL) -e \
+		qemu-system-i386 \
+			-monitor stdio \
+			-S \
+			-hda $(QEMU_DIR)/$(QEMU_DISK) \
+			-cdrom $(ISO_DIR)/$(ISO) \
+			$(QEMU_FLAGS)
 endif
 
 # assemble assembly files, generic
