@@ -11,7 +11,7 @@ QEMU_DEBUG=false
 STRIP=false
 
 # generic sources list (case sensitive, by directory)
-##############################################################################
+########################################################################
 SRC=\
 boot/boot.c \
 boot/boot.s \
@@ -33,14 +33,15 @@ boot/kernel/interrupts/idt.c \
 boot/kernel/interrupts/idt.s \
 boot/kernel/interrupts/isr.s \
 \
+\
+boot/kernel/libc/ctype/ctype.c \
+\
+boot/kernel/libc/stdlib/stdlib.c \
+\
+boot/kernel/libc/string/string.c \
+\
 boot/ui/terminal.c \
-\
-lib/libc/ctype/ctype.c \
-\
-lib/libc/stdlib/stdlib.c \
-\
-lib/libc/string/string.c \
-##############################################################################
+########################################################################
 
 BIN=$(VERSION).bin
 ISO=$(BIN:.bin=.iso)
@@ -203,8 +204,8 @@ $(ISO_DIR)/$(ISO): $(OBJ) $(BIN_DIR)/$(BIN)
 	cp grub.cfg $(GRUB_DIR)/iso/boot/grub/grub.cfg
 	mkdir -p $(ISO_DIR)
 	grub-mkrescue \
+		--directory=/usr/lib/grub/i386-pc \
 		--output=$(ISO_DIR)/$(ISO) $(GRUB_DIR)/iso
-		--directory=/usr/lib/grub/i386-pc
 
 # target to create bootable disk image using GRUB bootloader
 iso: $(OBJ) $(BIN_DIR)/$(BIN) $(ISO_DIR)/$(ISO)
@@ -233,9 +234,9 @@ $(DEBUG_DIR)/$(ISO_DIR)/$(ISO): $(OBJ) $(BIN_DIR)/$(BIN) \
 	cp grub.cfg $(DEBUG_DIR)/$(GRUB_DIR)/iso/boot/grub/grub.cfg
 	mkdir -p $(DEBUG_DIR)/$(ISO_DIR)
 	grub-mkrescue \
+		--directory=/usr/lib/grub/i386-pc \
 		--output=$(DEBUG_DIR)/$(ISO_DIR)/$(ISO) \
-			$(DEBUG_DIR)/$(GRUB_DIR)/iso \
-		--directory=/usr/lib/grub/i386-pc
+			$(DEBUG_DIR)/$(GRUB_DIR)/iso
 
 # run bootable disk image using QEMU
 .PHONY: qemu

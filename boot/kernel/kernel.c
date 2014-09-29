@@ -56,8 +56,11 @@ void kernel_main(void)
     terminal_write_string("Kernel stopped successfully.\n");
 }
 
-void kernel_panic(const char* str)
+void kernel_panic(char* str, size_t len)
 {
+    /* Ensures that the panic message is null-terminated. */
+    str[len] = '\0';
+
     /* Prints error message. */
     terminal_write_string(str);
 
@@ -67,7 +70,6 @@ void kernel_panic(const char* str)
         "cli\n"
         "hlt\n"
         "0:\n"
-        "1:\n"
         "jmp 0b"
         : /* No outputs. */
         : /* No inputs. */

@@ -35,7 +35,10 @@ void kernel_main(void);
  * @brief Writes error message and then prevents further execution.
  *
  * @param str String containing error message to write.
+ * @param len Length of the string. The string will be nulled at this
+ * position by the function to enforce this length in the case of an
+ * error.
  */
-void kernel_panic(const char* str);
+void kernel_panic(char* str, size_t len);
 
 #endif /* KERNEL_HPP_INCLUDED */
