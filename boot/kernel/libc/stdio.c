@@ -19,21 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _STDIO_H_INCLUDED
-#define _STDIO_H_INCLUDED
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
-/**
- * @note "stdio.h" cannot be properly and fully implemented until filesystem
- * abstractions have been implemented.
- */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <stdio.h>
 
 /**
  * @brief Directly writes a string to stdout without formatting.
@@ -41,10 +31,12 @@ extern "C" {
  * @param str String to write. This should be null-terminated.
  * @param len Length of the string to write.
  */
-void write(const char* str, size_t len);
+void write(const char* str, size_t len)
+{
+    char backup_char = str[len];
+    ((char*) str)[len] = 0;
 
-#ifdef __cplusplus
+    terminal_write_string(str);
+
+    ((char*) str)[len] = backup_char;
 }
-#endif
-
-#endif /* _STDIO_H_INCLUDED */

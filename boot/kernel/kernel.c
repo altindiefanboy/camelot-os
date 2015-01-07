@@ -24,6 +24,7 @@
 #include <stdint.h>
 
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -47,11 +48,15 @@ void kernel_main(void)
      * operations. */
     kernel_initialize();
 
-    terminal_write_string("Kernel initialized.\n");
+    char str_1[] = "Kernel initialized.\n";
+    write(str_1, strlen(str_1));
 
     #ifdef TEST
     kernel_test_start();
     #endif /* TEST */
+
+    char tstr[] = "this is a string\n";
+    write(tstr, strlen(tstr));
 
     terminal_write_string("Kernel stopped successfully.\n");
 }
@@ -62,7 +67,7 @@ void kernel_panic(char* str, size_t len)
     str[len] = '\0';
 
     /* Prints error message. */
-    terminal_write_string(str);
+    write(str, len);
 
     /* Prevents further execution. */
     asm volatile

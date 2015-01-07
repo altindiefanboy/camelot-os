@@ -33,12 +33,10 @@ boot/kernel/interrupts/idt.c \
 boot/kernel/interrupts/idt.s \
 boot/kernel/interrupts/isr.s \
 \
-\
-boot/kernel/libc/ctype/ctype.c \
-\
-boot/kernel/libc/stdlib/stdlib.c \
-\
-boot/kernel/libc/string/string.c \
+boot/kernel/libc/ctype.c \
+boot/kernel/libc/stdio.c \
+boot/kernel/libc/stdlib.c \
+boot/kernel/libc/string.c \
 \
 boot/ui/terminal.c \
 ########################################################################
